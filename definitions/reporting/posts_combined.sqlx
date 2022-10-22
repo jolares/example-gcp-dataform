@@ -20,7 +20,7 @@ SELECT
   owner_user_id,
   parent_id
 FROM
-  ${ref("stg_posts_answers")}
+  ${ref("test_posts_answers")}
 
 union all
 
@@ -33,4 +33,4 @@ SELECT
   owner_user_id,
   parent_id
 FROM
-  ${ref("stg_posts_questions")}
+  ${ref("test_posts_questions")}
