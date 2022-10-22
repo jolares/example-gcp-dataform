@@ -1,0 +1,6 @@
+{
+  "name": "stackoverflow-ai",
+  "dependencies": {
+    "@dataform/core": "2.0.1"
+  }
+}

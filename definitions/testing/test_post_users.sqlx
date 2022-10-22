@@ -1,0 +1,13 @@
+config {
+  type: "view",
+  schema: "testing",
+  description: "Cleaned version of stackoverflow.users table"
+}
+
+SELECT
+  id AS user_id,
+  age,
+  creation_date,
+  round(timestamp_diff(current_timestamp(), creation_date, day)/365) AS user_tenure
+FROM
+  ${ref("users")}

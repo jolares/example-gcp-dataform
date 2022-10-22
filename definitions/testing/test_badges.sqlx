@@ -1,0 +1,13 @@
+config {
+  type: "view",
+  schema: "testing",
+  description: "Cleaned version of stackoverflow.badges"
+}
+
+SELECT
+  id AS badge_id,
+  name AS badge_name,
+  date AS award_timestamp,
+  user_id
+FROM
+  ${ref("badges")}

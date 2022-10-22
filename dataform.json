@@ -1,0 +1,7 @@
+{
+  "defaultSchema": "stackoverflow_dataset",
+  "assertionSchema": "dataform_assertions",
+  "warehouse": "bigquery",
+  "defaultDatabase": "stackoverflow-ai",
+  "defaultLocation": "US"
+}
