@@ -5,7 +5,7 @@ config {
   bigquery: {
     partitionBy: "date(created_at)"
   },
-  description: "Combines data fields from posts_questions and posts_answers tables into a single posts_all table",
+  description: "Combines posts_questions and posts_answers tables into a single posts_all table",
   assertions: {
     uniqueKey: ["post_id"]
   }
@@ -20,7 +20,7 @@ SELECT
   owner_user_id,
   parent_id
 FROM
-  ${ref("test_posts_answers")}
+  ${ref("stage_posts_answers")}
 
 union all
 
@@ -33,4 +33,4 @@ SELECT
   owner_user_id,
   parent_id
 FROM
-  ${ref("test_posts_questions")}
+  ${ref("stage_posts_questions")}

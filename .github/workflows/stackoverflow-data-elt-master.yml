@@ -1,0 +1,86 @@
+name: Data ELT (master)
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      checks: read
+      contents: write
+    steps:
+      - name: Checkout git repository branches
+        uses: actions/checkout@v2
+
+      - name: Install system dependencies
+        run: npm ci
+
+      - name: Authenticate with GCP BigQuery
+        run: |
+          # Load BiQuery service account key
+          echo "$secrets.GCP_BIGQUERY_SA_KEY" > .df-credentials.json \
+            && gpg --quiet --batch --yes --decrypt --passphrase="$secrets.GCP_BIGQUERY_SA_KEY" --output .df-credentials.json .df-credentials.json.gpg
+
+      - name: Decrypt Dataform credentials
+        run: gpg --quiet --batch --yes --decrypt --passphrase="$CREDENTIALS_GPG_PASSPHRASE" --output .df-credentials.json .df-credentials.json.gpg
+        env:
+          CREDENTIALS_GPG_PASSPHRASE: ${{ secrets.CREDENTIALS_GPG_PASSPHRASE }}
+
+      - name: Compile Dataform project
+        run: npm run build
+
+      - name: Dry-Run Dataform project
+        run: npx dataform run --dry-run
+
+  run:
+    name: Deploy
+    needs: [build]
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      checks: read
+      contents: write
+    steps:
+      - name: Checkout git repository branches
+        uses: actions/checkout@v2
+
+  scheduled-run:
+    name: ELT
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      checks: read
+      contents: write
+    steps:
+      - name: Checkout git repository branches
+        uses: actions/checkout@v2
+
+  # The job for compiling a Dataform project using the official Docker image, as
+  # provided in the official Dataform docs.
+  # compile:
+  #   permissions:
+  #     actions: write
+  #     checks: read
+  #     contents: write
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code into workspace directory
+  #       uses: actions/checkout@v2
+
+  #     - name: Install project dependencies
+  #       uses: docker://dataformco/dataform:latest
+  #       with:
+  #         args: install
+
+  #     - name: Run dataform compile
+  #       uses: docker://dataformco/dataform:latest
+  #       with:
+  #         args: compile

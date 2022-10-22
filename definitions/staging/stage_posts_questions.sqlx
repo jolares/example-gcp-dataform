@@ -1,19 +1,19 @@
 config {
   type: "view",
-  schema: "testing",
-  description: "Cleaned version of stackoverflow.posts_answers"
+  schema: "staging",
+  description: "A cleaned version of stackoverflow.posts_questions"
 }
 
 SELECT
   id as post_id,
   creation_date as created_at,
-  'answer' as type,
+  'question' as type,
   title,
   body,
   owner_user_id,
-  cast(parent_id as string) as parent_id
+  parent_id
 FROM
-  ${ref("posts_answers")}
+  ${ref("posts_questions")}
 WHERE
   -- limit to recent data for the purposes of this demo project
   creation_date >= timestamp("2019-01-01")

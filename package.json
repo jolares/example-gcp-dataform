@@ -4,7 +4,14 @@
     "node": "16.14.2",
     "npm": "8.5.0"
   },
+  "scripts": {
+    "build": "npx dataform compile",
+    "test": "npx dataform test",
+    "// ci //": "",
+    "prepare": "npx dataform install"
+  },
   "dependencies": {
-    "@dataform/core": "2.0.1"
+    "@dataform/core": "2.0.1",
+    "@dataform/cli": "^2.0.0"
   }
 }
