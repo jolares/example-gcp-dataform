@@ -5,7 +5,7 @@ config {
   bigquery: {
     partitionBy: "date(created_at)"
   },
-  description: "Combine both questions and answers into a single posts_all table",
+  description: "Combines data fields from posts_questions and posts_answers tables into a single posts_all table",
   assertions: {
     uniqueKey: ["post_id"]
   }
